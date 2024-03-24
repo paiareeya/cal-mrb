@@ -33,9 +33,7 @@ const updateAmountMrb = (index: number, event: any) => {
     event.target.value = rawValue
     let amount = parseInt(rawValue);
     scriptsMrb.value[index].amount = scriptsMrb.value[index].price * amount;
-    if (!amount) {
-        scriptsMrb.value[index].amount = 0;
-    }
+    
     let prices = 0
     let totals = 0
     scriptsMrb.value.forEach((script) => {
@@ -48,6 +46,13 @@ const updateAmountMrb = (index: number, event: any) => {
             billMrb.value.receivedAmount = Math.round(totals)
         }
     })
+
+    if (!amount) {
+        scriptsMrb.value[index].amount = 0;
+        billMrb.value.price = 0
+        billMrb.value.total = 0
+        billMrb.value.receivedAmount = 0
+    }
 };
 
 
@@ -56,9 +61,7 @@ const updateAmountFunny = (index: number, event: any) => {
     event.target.value = rawValue
     let amount = parseInt(event.target.value);
     scriptsFunny.value[index].amount = scriptsFunny.value[index].price * amount
-    if (!amount) {
-        scriptsFunny.value[index].amount = 0
-    }
+    
 
     let prices = 0
     let totals = 0
@@ -72,9 +75,19 @@ const updateAmountFunny = (index: number, event: any) => {
             billFunny.value.receivedAmount = Math.round(totals)
         }
     })
+
+    if (!amount) {
+        scriptsFunny.value[index].amount = 0
+        billFunny.value.price = 0
+        billFunny.value.total = 0
+        billFunny.value.receivedAmount = 0
+    }
+    
 };
 
 watch(billMrb.value, () => {
+    console.log('pppp');
+    
     if (billMrb.value.receivedAmount > billFunny.value.receivedAmount) {
         counts.value = billMrb.value.receivedAmount - billFunny.value.receivedAmount;
         value.value = 'FUNNY จะได้รับเงินจำนวน ' + counts.value + ' บาท'
@@ -87,11 +100,17 @@ watch(billMrb.value, () => {
 })
 watch(billFunny.value, () => {
     if (billFunny.value.receivedAmount > billMrb.value.receivedAmount) {
+        console.log('qqq');
+        
         counts.value = billFunny.value.receivedAmount - billMrb.value.receivedAmount
         value.value = 'MRB จะได้รับเงินจำนวน ' + counts.value + ' บาท'
     } else if (billMrb.value.receivedAmount === billFunny.value.receivedAmount) {
+        console.log('dddd');
+
         value.value = 'MRB และ FUNNY จะได้รับเงินจำนวนเท่ากัน'
     } else if (billMrb.value.receivedAmount < billFunny.value.receivedAmount) {
+        console.log('wwww');
+
         counts.value = billMrb.value.receivedAmount - billFunny.value.receivedAmount
         value.value = 'FUNNY จะได้รับเงินจำนวน ' + counts.value + ' บาท'
     }
@@ -106,7 +125,8 @@ watch(billFunny.value, () => {
                 <span v-for="(script, index) in scriptsMrb" :key="index" class="grid grid-cols-12 items-center gap-2 mt-2">
                     <p class="col-span-3">{{ script.name }}</p>
                     <input type="text" class="col-span-2 bg-gray-600 rounded-md outline-none p-1 text-center w-10" @input="updateAmountMrb(index, $event)">
-                    <p class="col-span-4">{{ script.amount }}</p>
+                    <p class="col-span-2">{{ script.price }}</p>
+                    <p class="col-span-2">{{ script.amount }}</p>
                 </span>
             </div>
             <div class="col-span-6">
@@ -132,7 +152,8 @@ watch(billFunny.value, () => {
                 <span v-for="(script, index) in scriptsFunny" :key="index" class="grid grid-cols-12 items-center gap-2 mt-2">
                     <p class="col-span-3">{{ script.name }}</p>
                     <input type="text" class="col-span-2 bg-gray-600 rounded-md outline-none p-1 text-center w-10" @input="updateAmountFunny(index, $event)">
-                    <p class="col-span-4">{{ script.amount }}</p>
+                    <p class="col-span-2">{{ script.price }}</p>
+                    <p class="col-span-2">{{ script.amount }}</p>
                 </span>
             </div>
             <div class="col-span-6">
