@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-
+import axios from 'axios';
 let counts = ref(0)
 let value = ref('')
 
 const scriptsMrb = ref([
-    { name: 'auto donate', price: 1990, amount: 0 },
-    { name: 'jail', price: 1499, amount: 0 },
-    { name: 'banking', price: 1599, amount: 0 },
-    { name: 'economy', price: 1550, amount: 0 },
+    { name: 'auto donate', price: 1990, amount: 0,count : 0 },
+    { name: 'jail', price: 1499, amount: 0,count : 0 },
+    { name: 'banking', price: 1599, amount: 0 ,count : 0},
+    { name: 'economy', price: 1550, amount: 0 ,count : 0},
 ])
 const scriptsFunny = ref([
-    { name: 'auto donate', price: 1990, amount: 0 },
-    { name: 'jail', price: 1499, amount: 0 },
-    { name: 'banking', price: 1599, amount: 0 },
-    { name: 'economy', price: 1550, amount: 0 },
+    { name: 'auto donate', price: 1990, amount: 0 ,count : 0},
+    { name: 'jail', price: 1499, amount: 0 ,count : 0},
+    { name: 'banking', price: 1599, amount: 0 ,count : 0},
+    { name: 'economy', price: 1550, amount: 0 ,count : 0},
 ])
 
 let billMrb = ref({
@@ -28,12 +28,13 @@ let billFunny = ref({
     receivedAmount: 0
 })
 
+
 const updateAmountMrb = (index: number, event: any) => {
     let rawValue = event.target.value.replace(/[^0-9]/g, '');
     event.target.value = rawValue
     let amount = parseInt(rawValue);
     scriptsMrb.value[index].amount = scriptsMrb.value[index].price * amount;
-    
+
     let prices = 0
     let totals = 0
     scriptsMrb.value.forEach((script) => {
@@ -61,7 +62,7 @@ const updateAmountFunny = (index: number, event: any) => {
     event.target.value = rawValue
     let amount = parseInt(event.target.value);
     scriptsFunny.value[index].amount = scriptsFunny.value[index].price * amount
-    
+
 
     let prices = 0
     let totals = 0
@@ -82,12 +83,54 @@ const updateAmountFunny = (index: number, event: any) => {
         billFunny.value.total = 0
         billFunny.value.receivedAmount = 0
     }
-    
+
 };
+
+const getSql = () => {
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: 'https://mrbinsertip.work/service_for_project/getpartnersell',
+        headers: {}
+    };
+
+    axios.request(config)
+        .then((response) => {
+            const scripts = response.data
+            scripts.forEach((element: any) => {
+                if (element.seller === 'MRB SHOP') {
+                    if (element.name === 'autodonate') {
+                        scriptsMrb.value[0].count = element.count
+                    } else if (element.name === 'Jail') {
+                        scriptsMrb.value[1].count = element.count
+                    } else if (element.name === 'banking') {
+                        scriptsMrb.value[2].count = element.count
+                    } else if (element.name === 'EconomyX') {
+                        scriptsMrb.value[3].count = element.count
+                    }
+                } else if (element.seller === 'Funny Production') {
+                    if (element.name === 'autodonate') {
+                        scriptsFunny.value[0].count = element.count
+                    } else if (element.name === 'Jail') {
+                        scriptsFunny.value[1].count = element.count
+                    } else if (element.name === 'banking') {
+                        scriptsFunny.value[2].count = element.count
+                    } else if (element.name === 'EconomyX') {
+                        scriptsFunny.value[3].count = element.count
+                    }
+                }
+            });
+            
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 watch(billMrb.value, () => {
     console.log('pppp');
-    
+
     if (billMrb.value.receivedAmount > billFunny.value.receivedAmount) {
         counts.value = billMrb.value.receivedAmount - billFunny.value.receivedAmount;
         value.value = 'FUNNY จะได้รับเงินจำนวน ' + counts.value + ' บาท'
@@ -101,7 +144,7 @@ watch(billMrb.value, () => {
 watch(billFunny.value, () => {
     if (billFunny.value.receivedAmount > billMrb.value.receivedAmount) {
         console.log('qqq');
-        
+
         counts.value = billFunny.value.receivedAmount - billMrb.value.receivedAmount
         value.value = 'MRB จะได้รับเงินจำนวน ' + counts.value + ' บาท'
     } else if (billMrb.value.receivedAmount === billFunny.value.receivedAmount) {
@@ -122,11 +165,14 @@ watch(billFunny.value, () => {
         <p class="font-bold text-xl">MRB</p>
         <div class="grid grid-cols-12">
             <div class="col-span-6">
-                <span v-for="(script, index) in scriptsMrb" :key="index" class="grid grid-cols-12 items-center gap-2 mt-2">
+                <span v-for="(script, index) in scriptsMrb" :key="index"
+                    class="grid grid-cols-12 items-center gap-2 mt-2">
                     <p class="col-span-3">{{ script.name }}</p>
-                    <input type="text" class="col-span-2 bg-gray-600 rounded-md outline-none p-1 text-center w-10" @input="updateAmountMrb(index, $event)">
+                    <input type="text" class="col-span-2 bg-gray-600 rounded-md outline-none p-1 text-center w-10"
+                        @input="updateAmountMrb(index, $event)">
                     <p class="col-span-2">{{ script.price }}</p>
                     <p class="col-span-2">{{ script.amount }}</p>
+                    <p class="ccol-span-2 text-[#A3FFD6]" v-if="script.count > 0">{{ script.count }}</p>
                 </span>
             </div>
             <div class="col-span-6">
@@ -142,18 +188,22 @@ watch(billFunny.value, () => {
                         <p class="font-bold">{{ billMrb.receivedAmount }} บาท</p>
                     </span>
                 </div>
-                <p class="mt-4 font-bold text-orange-200 text-end">MRB จะให้เงิน FUNNY จำนวน {{ billMrb.receivedAmount }} บาท</p>
+                <p class="mt-4 font-bold text-orange-200 text-end">MRB จะให้เงิน FUNNY จำนวน {{ billMrb.receivedAmount
+                    }} บาท</p>
             </div>
         </div>
 
         <p class="font-bold text-xl mt-10">FUNNY</p>
         <div class="grid grid-cols-12">
             <div class="col-span-6">
-                <span v-for="(script, index) in scriptsFunny" :key="index" class="grid grid-cols-12 items-center gap-2 mt-2">
+                <span v-for="(script, index) in scriptsFunny" :key="index"
+                    class="grid grid-cols-12 items-center gap-2 mt-2">
                     <p class="col-span-3">{{ script.name }}</p>
-                    <input type="text" class="col-span-2 bg-gray-600 rounded-md outline-none p-1 text-center w-10" @input="updateAmountFunny(index, $event)">
+                    <input type="text" class="col-span-2 bg-gray-600 rounded-md outline-none p-1 text-center w-10"
+                        @input="updateAmountFunny(index, $event)">
                     <p class="col-span-2">{{ script.price }}</p>
                     <p class="col-span-2">{{ script.amount }}</p>
+                    <p class="col-span-2 text-[#A3FFD6]" v-if="script.count > 0">{{ script.count }}</p>
                 </span>
             </div>
             <div class="col-span-6">
@@ -169,10 +219,14 @@ watch(billFunny.value, () => {
                         <p class="font-bold">{{ billFunny.receivedAmount }} บาท</p>
                     </span>
                 </div>
-                <p class="mt-4 font-bold text-orange-200 text-end">FUNNY จะให้เงิน MRB จำนวน {{ billFunny.receivedAmount }} บาท</p>
+                <p class="mt-4 font-bold text-orange-200 text-end">FUNNY จะให้เงิน MRB จำนวน {{ billFunny.receivedAmount
+                    }} บาท</p>
             </div>
         </div>
-
+        <br>
+        <button v-on:click="getSql()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            โหลด SQL
+        </button>
         <div class="mt-10 text-center text-amber-100 font-bold text-xl">{{ value }}</div>
     </div>
 </template>
