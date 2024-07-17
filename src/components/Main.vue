@@ -142,7 +142,7 @@ watch(billMrb.value, () => {
     }
 })
 watch(billFunny.value, () => {
-    if (billFunny.value.receivedAmount > billMrb.value.receivedAmount) {
+    if (billMrb.value.receivedAmount > billFunny.value.receivedAmount) {
         console.log('qqq');
 
         counts.value = billFunny.value.receivedAmount - billMrb.value.receivedAmount
