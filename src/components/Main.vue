@@ -145,7 +145,7 @@ watch(billFunny.value, () => {
     if (billMrb.value.receivedAmount > billFunny.value.receivedAmount) {
         console.log('qqq');
 
-        counts.value = billFunny.value.receivedAmount - billMrb.value.receivedAmount
+        counts.value = billMrb.value.receivedAmount - billFunny.value.receivedAmount
         value.value = 'MRB จะได้รับเงินจำนวน ' + counts.value + ' บาท'
     } else if (billMrb.value.receivedAmount === billFunny.value.receivedAmount) {
         console.log('dddd');
