@@ -129,33 +129,31 @@ const getSql = () => {
 }
 
 watch(billMrb.value, () => {
-    console.log('pppp');
-
     if (billMrb.value.receivedAmount > billFunny.value.receivedAmount) {
         counts.value = billMrb.value.receivedAmount - billFunny.value.receivedAmount;
         value.value = 'FUNNY จะได้รับเงินจำนวน ' + counts.value + ' บาท'
+        console.log('FUNNY จะได้รับเงินจำนวน');
     } else if (billMrb.value.receivedAmount === billFunny.value.receivedAmount) {
         value.value = 'MRB และ FUNNY จะได้รับเงินจำนวนเท่ากัน'
-    } else if (billMrb.value.receivedAmount < billFunny.value.receivedAmount) {
+        console.log('จะได้รับเงินจำนวนเท่ากัน');
+    } else if (billFunny.value.receivedAmount > billMrb.value.receivedAmount) {
         counts.value = billFunny.value.receivedAmount - billMrb.value.receivedAmount
         value.value = 'MRB จะได้รับเงินจำนวน ' + counts.value + ' บาท'
+        console.log('MRB จะได้รับเงินจำนวน');
     }
 })
 watch(billFunny.value, () => {
     if (billMrb.value.receivedAmount > billFunny.value.receivedAmount) {
-        console.log('qqq');
-
         counts.value = billMrb.value.receivedAmount - billFunny.value.receivedAmount
         value.value = 'MRB จะได้รับเงินจำนวน ' + counts.value + ' บาท'
+        console.log('MRB จะได้รับเงินจำนวน');
     } else if (billMrb.value.receivedAmount === billFunny.value.receivedAmount) {
-        console.log('dddd');
-
         value.value = 'MRB และ FUNNY จะได้รับเงินจำนวนเท่ากัน'
-    } else if (billMrb.value.receivedAmount < billFunny.value.receivedAmount) {
-        console.log('wwww');
-
+        console.log('จะได้รับเงินจำนวนเท่ากัน');
+    } else if (billFunny.value.receivedAmount > billMrb.value.receivedAmount) {
         counts.value = billFunny.value.receivedAmount - billMrb.value.receivedAmount
         value.value = 'FUNNY จะได้รับเงินจำนวน ' + counts.value + ' บาท'
+        console.log('FUNNY จะได้รับเงินจำนวน');
     }
 })
 
