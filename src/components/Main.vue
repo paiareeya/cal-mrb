@@ -154,7 +154,7 @@ watch(billFunny.value, () => {
     } else if (billMrb.value.receivedAmount < billFunny.value.receivedAmount) {
         console.log('wwww');
 
-        counts.value = billMrb.value.receivedAmount - billFunny.value.receivedAmount
+        counts.value = billFunny.value.receivedAmount - billMrb.value.receivedAmount
         value.value = 'FUNNY จะได้รับเงินจำนวน ' + counts.value + ' บาท'
     }
 })
