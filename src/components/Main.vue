@@ -134,6 +134,9 @@ const getSql = () => {
                     } else if (element.name === 'EconomyX') {
                         scriptsMrb.value[3].count = element.count
                         updateAmountMrb(3, element.count)
+                    } else if (element.name === 'mail') {
+                        scriptsMrb.value[4].count = element.count
+                        updateAmountMrb(4, element.count)
                     }
 
                 } else if (element.seller === 'Funny Production') {
@@ -149,6 +152,9 @@ const getSql = () => {
                     } else if (element.name === 'EconomyX') {
                         scriptsFunny.value[3].count = element.count
                         updateAmountFunny(3, element.count)
+                    } else if (element.name === 'mail') {
+                        scriptsMrb.value[4].count = element.count
+                        updateAmountMrb(4, element.count)
                     }
                 }
             });
