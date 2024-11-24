@@ -9,12 +9,14 @@ const scriptsMrb = ref([
     { name: 'jail', price: 1499, amount: 0, count: 0 },
     { name: 'banking', price: 1599, amount: 0, count: 0 },
     { name: 'economy', price: 1550, amount: 0, count: 0 },
+    { name: 'mail', price: 999, amount: 0, count: 0 },
 ])
 const scriptsFunny = ref([
     { name: 'auto donate', price: 1990, amount: 0, count: 0 },
     { name: 'jail', price: 1499, amount: 0, count: 0 },
     { name: 'banking', price: 1599, amount: 0, count: 0 },
     { name: 'economy', price: 1550, amount: 0, count: 0 },
+    { name: 'mail', price: 999, amount: 0, count: 0 },
 ])
 
 let billMrb = ref({
