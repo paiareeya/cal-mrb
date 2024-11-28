@@ -153,8 +153,8 @@ const getSql = () => {
                         scriptsFunny.value[3].count = element.count
                         updateAmountFunny(3, element.count)
                     } else if (element.name === 'mail') {
-                        scriptsMrb.value[4].count = element.count
-                        updateAmountMrb(4, element.count)
+                        scriptsFunny.value[4].count = element.count
+                        updateAmountFunny(4, element.count)
                     }
                 }
             });
