@@ -113,7 +113,7 @@ const getSql = () => {
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'https://mrbinsertip.work/service_for_project/getpartnersell',
+        url: 'https://api.mrb-developer.com/service_for_project/getpartnersell',
         headers: {}
     };
 
